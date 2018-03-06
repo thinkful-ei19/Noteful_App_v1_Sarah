@@ -4,6 +4,7 @@
 const data = require('./db/notes');
 const simDB = require('./db/simDB');
 const notes = simDB.initialize(data);
+const {PORT} = require('./config');
 
 console.log('hello world!');
 
@@ -13,6 +14,7 @@ const app = express();
 app.use(express.static('public'));
 
 app.get('/api/notes', (req, res) => {
+  
   const {searchTerm} = req.query;
   let searchData = searchTerm ? data.filter(notes => notes.title.includes(searchTerm)) : data;
   res.json(searchData);
@@ -25,7 +27,7 @@ app.get('/api/notes/:id', (req, res) => {
 });
 
 // Listen for incoming connections
-app.listen(8080, function () {
+app.listen(PORT, function () {
   console.info(`Server listening on ${this.address().port}`);
 }).on('error', err => {
   console.error(err);
