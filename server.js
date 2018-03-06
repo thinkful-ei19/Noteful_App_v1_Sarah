@@ -13,6 +13,16 @@ const express = require('express');
 const app = express();
 app.use(express.static('public'));
 
+const logger = function(req, res, next) {
+  const now = new Date();
+  console.log(
+    `${now.toLocaleDateString()} ${now.toLocaleTimeString()}, ${req.method} ${req.url}`
+  );
+  next();
+};
+
+app.use(logger);
+
 app.get('/api/notes', (req, res) => {
   
   const {searchTerm} = req.query;
