@@ -23,17 +23,30 @@ const logger = function(req, res, next) {
 
 app.use(logger);
 
-app.get('/api/notes', (req, res) => {
-  
+app.get('/api/notes', (req, res, next) => {
   const {searchTerm} = req.query;
-  let searchData = searchTerm ? data.filter(notes => notes.title.includes(searchTerm)) : data;
-  res.json(searchData);
+
+  notes.filter(searchTerm, (err, list) => {
+    if (err) {
+      return next(err); //will go to error handler
+    }
+    res.json(list);
+  });
 });
 
-app.get('/api/notes/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const note = data.find(note => note.id === id);
-  res.json(note);
+app.get('/api/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  notes.find(id, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    } else {
+      next();
+    }
+  });
 });
 
 app.get('/boom', (req, res, next) => {
