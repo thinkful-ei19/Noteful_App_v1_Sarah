@@ -12,10 +12,12 @@ console.log('hello world!');
 const express = require('express');
 
 const app = express();
+//log requests
+app.use(logger);
+
 app.use(express.static('public'));
 app.use(express.json());
 
-app.use(logger);
 
 app.get('/api/notes', (req, res, next) => {
   const {searchTerm} = req.query;
