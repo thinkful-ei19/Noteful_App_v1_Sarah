@@ -4,6 +4,7 @@
 const data = require('./db/notes');
 const simDB = require('./db/simDB');
 const notes = simDB.initialize(data);
+const logger = require('./middleware/logger');
 const {PORT} = require('./config');
 
 console.log('hello world!');
@@ -13,14 +14,6 @@ const express = require('express');
 const app = express();
 app.use(express.static('public'));
 app.use(express.json());
-
-const logger = function(req, res, next) {
-  const now = new Date();
-  console.log(
-    `${now.toLocaleDateString()} ${now.toLocaleTimeString()} ${req.method} ${req.url}`
-  );
-  next();
-};
 
 app.use(logger);
 

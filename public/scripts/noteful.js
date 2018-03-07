@@ -80,7 +80,7 @@ const noteful = (function () {
 
       api.update(noteObj.id, noteObj, updateResponse => {
         store.currentNote = updateResponse;
-
+        
         render();
       });
 
