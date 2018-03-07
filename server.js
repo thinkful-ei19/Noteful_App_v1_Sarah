@@ -3,21 +3,22 @@
 // TEMP: Simple In-Memory Database
 
 //const logger = require('./middleware/logger');
-const {PORT} = require('./config');
+
 
 console.log('hello world!');
 
 const express = require('express');
 const morgan = require('morgan');
 const notesRouter = require('./router/notes.router');
+const {PORT} = require('./config');
 
 const app = express();
 //log requests
 app.use(morgan('dev'));
 
-app.use(notesRouter);
-app.use(express.static('public'));
 app.use(express.json());
+app.use(express.static('public'));
+app.use(notesRouter);
 
 
 
