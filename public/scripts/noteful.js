@@ -118,9 +118,18 @@ const noteful = (function () {
     $('.js-notes-list').on('click', '.js-note-delete-button', event => {
       event.preventDefault();
       console.log('Delete clicked');
-      const currentID = getNoteIdFromElement(event.currentTarget);
+      const currentId = getNoteIdFromElement(event.currentTarget);
       
-      console.log(currentID);
+      console.log(currentId);
+
+      api.remove(currentId, () => {
+        store.notes = store.notes.filter(storeNote => {
+          return storeNote.id !== currentId; 
+        });
+        render();
+      });
+
+
       
       
     });

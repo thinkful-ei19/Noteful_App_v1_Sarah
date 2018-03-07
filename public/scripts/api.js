@@ -44,11 +44,10 @@ const api = {
     });
   },
 
-  remove: function (id) {
+  remove: function (id, callback) {
     $.ajax({
       type: 'DELETE',
       url: `/api/notes/${id}`,
-      dataType: 'json',
       success: callback
     });
   }
