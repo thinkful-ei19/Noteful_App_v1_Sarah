@@ -84,4 +84,22 @@ router.put('/api/notes/:id', (req, res, next) => {
   });
 });
 
+//delete an item
+router.delete('/api/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  notes.delete(id, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      console.log(`Deleteing item ${req.params.id}`);
+      res.sendStatus(204);
+    }
+    else {
+      next();
+    }
+  });
+});
+
 module.exports = router;
