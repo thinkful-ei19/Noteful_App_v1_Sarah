@@ -6,14 +6,14 @@ $(document).ready(function () {
 
   api.search({}, response => {
    
-    const newNote = {
-      title: 'new note',
-      content: 'the body'
-    };
-    console.log(newNote);
-    api.create(newNote, response => {
-      console.log('new note', response);
-    });
+    // const newNote = {
+    //   title: 'new note',
+    //   content: 'the body'
+    // };
+    // console.log(newNote);
+    // api.create(newNote, response => {
+    //   console.log('new note', response);
+    // });
     store.notes = response;
     noteful.render();
   });
