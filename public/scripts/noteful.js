@@ -39,13 +39,15 @@ const noteful = (function () {
   function handleNoteItemClick() {
     $('.js-notes-list').on('click', '.js-note-show-link', event => {
       event.preventDefault();
+      console.log('clicked');
 
       const noteId = getNoteIdFromElement(event.currentTarget);
 
-      api.details(noteId, detailsResponse => {
-        store.currentNote = detailsResponse;
-        render();
-      });
+      api.details(noteId)
+        .then(detailsResponse => {
+          store.currentNote = detailsResponse;
+          render();
+        });
 
     });
   }
@@ -57,10 +59,11 @@ const noteful = (function () {
       const searchTerm = $('.js-note-search-entry').val();
       store.currentSearchTerm = searchTerm ? { searchTerm } : {};
 
-      api.search(store.currentSearchTerm, searchResponse => {
-        store.notes = searchResponse;
-        render();
-      });
+      api.search(store.currentSearchTerm) 
+        .then(searchResponse => {
+          store.notes = searchResponse;
+          render();
+        });
 
     });
   }
@@ -79,29 +82,32 @@ const noteful = (function () {
   
       if (store.currentNote.id) {
   
-        api.update(store.currentNote.id, noteObj, updateResponse => {
-          store.currentNote = updateResponse;
+        api.update(store.currentNote.id, noteObj) 
+          .then(updateResponse => {
+            store.currentNote = updateResponse;
   
-          api.search(store.currentSearchTerm, updateResponse => {
-            store.notes = updateResponse;
-            render();
+            return api.search(store.currentSearchTerm) 
+              .then(updateResponse => {
+                store.notes = updateResponse;
+                render();
+              });
+  
           });
-  
-        });
-  
       } else {
   
-        api.create(noteObj, updateResponse => {
-          store.currentNote = updateResponse;
+        api.create(noteObj) 
+          .then(updateResponse => {
+            store.currentNote = updateResponse;
   
-          api.search(store.currentSearchTerm, updateResponse => {
-            store.notes = updateResponse;
-            render();
+            return api.search(store.currentSearchTerm) 
+              .then(updateResponse => {
+                store.notes = updateResponse;
+                render();
+              });
+  
           });
-  
-        });
       }
-  
+    
     });
   }
 
@@ -122,12 +128,13 @@ const noteful = (function () {
       
       console.log(currentId);
 
-      api.remove(currentId, () => {
-        store.notes = store.notes.filter(storeNote => {
-          return storeNote.id !== currentId; 
+      api.remove(currentId) 
+        .then(() => {
+          store.notes = store.notes.filter(storeNote => {
+            return storeNote.id !== currentId; 
+          });
+          render();
         });
-        render();
-      });
 
 
       
