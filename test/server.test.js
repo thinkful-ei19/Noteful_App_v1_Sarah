@@ -74,6 +74,38 @@ describe('GET request to api/notes', function() {
 
 describe('GET request to api/notes/:id', function() {
   it('should return one note matching the id', function() {
+    let note = {title: 'test title', content: 'test content'};
+    return chai
+      .request(app)
+      .get('/api/notes/1000')
+      .send(note)
+      .then(function (res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        //expect(res.body).to.be()
 
+        // const expectedKeys = ['id', 'title', 'content'];
+      });
+    console.log(res);
+  });
+});
+
+describe.only('POST request to api/notes', function() {
+  it('it should  POST a new note to the list', function() {
+    const newNote = {title: 'new Title', content: 'new Content'};
+    console.log(newNote);
+    return chai
+      .request(app)
+      .post('/api/notes')
+      .send(newNote)
+      .then(function(res) {
+        expect(res).to.have.status(201);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body).to.include.keys('id', 'title', 'content');
+        expect(res.body.id).to.not.equal(null);
+        expect(res.body).to.deep.equal(Object.assign(newNote, {id: res.body.id}));
+      });
+    console.log(res.body);
   });
 });
