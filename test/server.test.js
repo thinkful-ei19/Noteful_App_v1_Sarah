@@ -49,3 +49,31 @@ describe('404 handler', function () {
 
 });
 
+//test the GET endpoint api
+describe('GET request to api/notes', function() {
+  it('should get a full list of notes', function() {
+    return chai
+      .request(app)
+      .get('/api/notes')
+      .then(function (res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('array');
+
+        const expectedKeys = ['id', 'title', 'content'];
+        res.body.forEach(function(item) {
+          expect(item).to.be.a('object');
+          expect(item).to.include.keys(expectedKeys);
+        
+        });
+        console.log(res.body);
+        console.log(res);
+      });
+  });
+});
+
+describe('GET request to api/notes/:id', function() {
+  it('should return one note matching the id', function() {
+
+  });
+});
